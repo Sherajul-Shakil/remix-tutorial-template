@@ -13,18 +13,27 @@ import {
 
 
 import appStylesHref from "./app.css";
-import { getContacts } from "./data";
+import { getContacts, createEmptyContact } from "./data";
 
+// Apply css styles to the whole app
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStylesHref },
 ];
 
-
+// The loader function is called when the app is first rendered
 export const loader = async () => {
   const contacts = await getContacts();
   return json({ contacts });
 };
 
+// The action function is called when the form is submitted
+export const action = async () => {
+  const contact = await createEmptyContact();
+  return json({ contact });
+};
+
+
+// The root component is rendered for every route
 export default function App() {
   const { contacts } = useLoaderData<typeof loader>();
 
