@@ -45,13 +45,12 @@ export default function App() {
   const navigation = useNavigation();
   const submit = useSubmit();
 
+  const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has(
+      "q"
+    );
 
-  // useEffect(() => {
-  //   const searchField = document.getElementById("q");
-  //   if (searchField instanceof HTMLInputElement) {
-  //     searchField.value = q || "";
-  //   }
-  // }, [q]);
 
   return (
     <html lang="en">
@@ -72,6 +71,7 @@ export default function App() {
 
             >
               <input
+                className={searching ? "loading" : ""}
                 aria-label="Search contacts"
                 defaultValue={q || ""}
                 id="q"
@@ -79,7 +79,11 @@ export default function App() {
                 placeholder="Search"
                 type="search"
               />
-              <div id="search-spinner" aria-hidden hidden={true} />
+              <div
+                aria-hidden
+                hidden={!searching}
+                id="search-spinner"
+              />
             </Form>
             <Form method="post">
               <button type="submit">New</button>
@@ -90,7 +94,6 @@ export default function App() {
               <ul>
                 {contacts.map((contact) => (
                   <li key={contact.id}>
-                    {/* <Link to={`contacts/${contact.id}`}> */}
                     <NavLink
                       className={({ isActive, isPending }) =>
                         isActive
@@ -125,7 +128,7 @@ export default function App() {
 
         <div
           className={
-            navigation.state === "loading" ? "loading" : ""
+            navigation.state === "loading" && !searching ? "loading" : ""
           }
           id="detail"
         >
