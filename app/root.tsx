@@ -64,12 +64,17 @@ export default function App() {
         <div id="sidebar">
           <h1>Remix Contacts</h1>
           <div>
+            {/* search in every keystoke */}
             <Form id="search-form" role="search"
-              onChange={(event) =>
-                submit(event.currentTarget)
-              }
+              onChange={(event) => {
+                const isFirstSearch = q === null;
+                submit(event.currentTarget, {
+                  replace: !isFirstSearch,
+                });
+              }}
 
             >
+              {/* Search box */}
               <input
                 className={searching ? "loading" : ""}
                 aria-label="Search contacts"
@@ -79,16 +84,19 @@ export default function App() {
                 placeholder="Search"
                 type="search"
               />
+              {/* spinner */}
               <div
                 aria-hidden
                 hidden={!searching}
                 id="search-spinner"
               />
             </Form>
+            {/* create new contact */}
             <Form method="post">
               <button type="submit">New</button>
             </Form>
           </div>
+          {/* Nav element of contact */}
           <nav>
             {contacts.length ? (
               <ul>
@@ -126,6 +134,7 @@ export default function App() {
           </nav>
         </div>
 
+        {/* index page loader */}
         <div
           className={
             navigation.state === "loading" && !searching ? "loading" : ""
